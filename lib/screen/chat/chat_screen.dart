@@ -3,6 +3,8 @@ import 'package:chatflutter/components/groups_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../auth/profile_screen.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -26,8 +28,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Padding(
+                    children: [
+                      const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.inbox,
@@ -35,7 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           size: 18,
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text(
                           'MESSAGES',
@@ -46,13 +48,22 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.settings,
-                          color: Colors.blue,
-                          size: 23,
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProfileScreen()),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.settings,
+                            color: Colors.blue,
+                            size: 23,
+                          ),
                         ),
                       ),
                     ],
