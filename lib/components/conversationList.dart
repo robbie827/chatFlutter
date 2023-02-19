@@ -1,3 +1,4 @@
+import 'package:chatflutter/screen/chat/message_screen.dart';
 import 'package:flutter/material.dart';
 
 class ConversationList extends StatefulWidget {
@@ -23,17 +24,27 @@ class _ConversationListState extends State<ConversationList> {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Row(
           children: <Widget>[
             Expanded(
               child: Row(
                 children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/avatar1.jpg'),
-                    maxRadius: 30,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MessageScreen()),
+                      );
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(widget.imageUrl),
+                      maxRadius: 30,
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Expanded(

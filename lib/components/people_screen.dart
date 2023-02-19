@@ -32,14 +32,19 @@ class PeopleScreen extends StatelessWidget {
                           builder: (context) => const MessageScreen()),
                     );
                   },
-                  child: const CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      radius: 26,
-                      child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/avatar1.jpg'),
-                        radius: 24,
-                      )),
+                  child: Column(
+                    children: const [
+                      CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          radius: 26,
+                          child: CircleAvatar(
+                            backgroundImage:
+                                AssetImage('assets/images/avatar1.jpg'),
+                            radius: 24,
+                          )),
+                      Text('alek'),
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -53,14 +58,19 @@ class PeopleScreen extends StatelessWidget {
                           builder: (context) => const MessageScreen()),
                     );
                   },
-                  child: const CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      radius: 26,
-                      child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/Florian.jpg'),
-                        radius: 24,
-                      )),
+                  child: Column(
+                    children: const [
+                      CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          radius: 26,
+                          child: CircleAvatar(
+                            backgroundImage:
+                                AssetImage('assets/images/Florian.jpg'),
+                            radius: 24,
+                          )),
+                      Text('Robbie'),
+                    ],
+                  ),
                 ),
                 // child: Text(
                 //   'Robbie',

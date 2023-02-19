@@ -1,3 +1,4 @@
+import 'package:chatflutter/components/conversationList.dart';
 import 'package:chatflutter/components/people_screen.dart';
 import 'package:chatflutter/components/groups_screen.dart';
 import 'package:chatflutter/models/chatUsersModel.dart';
@@ -14,8 +15,10 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final FocusNode _focus = FocusNode();
   bool isTapped = false;
+  late String data;
+
   TextEditingController controller = TextEditingController(text: "");
-  List<ChatUser> userList = [
+  List<ChatUser> chatUser = [
     ChatUser(
         name: "Alek",
         messageText: "Awesome Setup",
@@ -24,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
     ChatUser(
         name: "Robbie",
         messageText: "That's great",
-        imageURL: "assets/images/Florian.npg",
+        imageURL: "assets/images/Florian.jpg",
         time: "Yesterday"),
     ChatUser(
         name: "Joy",
@@ -72,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        initialIndex: 1,
+        initialIndex: 0,
         length: 2,
         child: Scaffold(
             appBar: AppBar(
@@ -83,7 +86,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
@@ -129,7 +131,13 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: CupertinoSearchTextField(
                       controller: controller,
                       focusNode: _focus,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        if (value == null)
+                          print('hello');
+                        else
+                          print("okay");
+                        print(value);
+                      },
                       onSubmitted: (value) {},
                       autocorrect: true,
                     ),
@@ -167,30 +175,26 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             body: TabBarView(children: [
               isTapped == false
-                  ? PeopleScreen()
+                  ? const PeopleScreen()
                   : Container(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: 5,
+                        itemCount: chatUser.length,
+                        padding: const EdgeInsets.only(top: 16),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                radius: 26,
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/images/avatar1.jpg'),
-                                  radius: 24,
-                                ),
-                              ),
-                              Text(userList[index].name),
-                            ],
+                          return ConversationList(
+                            name: chatUser[index].name,
+                            messageText: chatUser[index].messageText.toString(),
+                            imageUrl: chatUser[index].imageURL.toString(),
+                            time: chatUser[index].time.toString(),
+                            isMessageRead:
+                                (index == 0 || index == 3) ? true : false,
                           );
                         },
                       ),
                     ),
-              GroupsScreen(),
+              const GroupsScreen(),
             ])));
   }
 }
