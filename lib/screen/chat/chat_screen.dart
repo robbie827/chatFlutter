@@ -1,5 +1,6 @@
 import 'package:chatflutter/components/people_screen.dart';
 import 'package:chatflutter/components/groups_screen.dart';
+import 'package:chatflutter/models/chatUsersModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -11,7 +12,63 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final FocusNode _focus = FocusNode();
+  bool isTapped = false;
   TextEditingController controller = TextEditingController(text: "");
+  List<ChatUser> userList = [
+    ChatUser(
+        name: "Alek",
+        messageText: "Awesome Setup",
+        imageURL: "assets/images/avatar1.jpg",
+        time: "Now"),
+    ChatUser(
+        name: "Robbie",
+        messageText: "That's great",
+        imageURL: "assets/images/Florian.npg",
+        time: "Yesterday"),
+    ChatUser(
+        name: "Joy",
+        messageText: "How are u?",
+        imageURL: "assets/images/avatar1.jpg",
+        time: "31 Jan"),
+    ChatUser(
+        name: "Robbie123",
+        messageText: "Who are u?",
+        imageURL: "assets/images/avatar1.jpg",
+        time: "25 Jan"),
+    ChatUser(
+        name: "Robbie12345",
+        messageText: "What is this?",
+        imageURL: "assets/images/avatar1.jpg",
+        time: "19 Jan")
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _focus.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _focus.removeListener(_onFocusChange);
+    _focus.dispose();
+  }
+
+  void _onFocusChange() {
+    debugPrint("Focus: ${_focus.hasFocus.toString()}");
+    if (_focus.hasFocus == true) {
+      setState(() {
+        isTapped = true;
+      });
+    } else {
+      setState(() {
+        isTapped = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -71,6 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     padding: const EdgeInsets.all(5.0),
                     child: CupertinoSearchTextField(
                       controller: controller,
+                      focusNode: _focus,
                       onChanged: (value) {},
                       onSubmitted: (value) {},
                       autocorrect: true,
@@ -108,7 +166,30 @@ class _ChatScreenState extends State<ChatScreen> {
               ]),
             ),
             body: TabBarView(children: [
-              PeopleScreen(),
+              isTapped == false
+                  ? PeopleScreen()
+                  : Container(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                radius: 26,
+                                child: CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/images/avatar1.jpg'),
+                                  radius: 24,
+                                ),
+                              ),
+                              Text(userList[index].name),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
               GroupsScreen(),
             ])));
   }

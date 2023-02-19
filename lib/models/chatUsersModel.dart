@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 
-class ChatUsers {
+class ChatUser {
   String name;
-  String messageText;
-  String imageURL;
-  String time;
-  ChatUsers(
-      {required this.name,
-      required this.messageText,
-      required this.imageURL,
-      required this.time});
+  String? messageText;
+  String? imageURL;
+  String? time;
+  ChatUser({
+    required this.name,
+    this.messageText,
+    this.imageURL,
+    this.time,
+  });
 }

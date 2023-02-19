@@ -33,7 +33,10 @@ class _LoginScreenState extends State<LoginScreen> {
           MaterialPageRoute(builder: (context) => const ChatScreen()),
         );
       } else {
-        // showToast;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Login failed"),
+          backgroundColor: Colors.red,
+        ));
       }
     });
   }

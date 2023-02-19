@@ -7,5 +7,6 @@ class ChatMessage {
 }
 
 List<ChatMessage> messages = [
-  ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
+  ChatMessage(
+      messageContent: "Is there any thing wrong?", messageType: "sender"),
 ];
