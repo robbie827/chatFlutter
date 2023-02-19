@@ -28,7 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.inbox,
@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           size: 18,
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text(
                           'MESSAGES',
@@ -58,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             //       builder: (context) => const ProfileScreen()),
                             // );
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.settings,
                             color: Colors.blue,
                             size: 23,

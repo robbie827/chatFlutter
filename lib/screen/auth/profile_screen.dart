@@ -1,3 +1,6 @@
+import 'package:chatflutter/models/chatMessageModel.dart';
+import 'package:chatflutter/screen/chat/chat_screen.dart';
+import 'package:chatflutter/screen/chat/message_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -27,7 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   size: 20,
                 ),
                 onTap: () {
-                  print("object");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MessageScreen()),
+                  );
                 },
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:chatflutter/screen/chat/message_screen.dart';
+import 'package:chatflutter/screen/chat/saved_screen.dart';
 import 'package:flutter/material.dart';
 
 class PeopleScreen extends StatelessWidget {
@@ -74,12 +75,26 @@ class PeopleScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(
                     left: 30, bottom: 10, right: 15, top: 20),
-                child: const Icon(Icons.bookmark_border_rounded,
-                    size: 30, color: Colors.blue),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SavedScreen()),
+                    );
+                  },
+                  child: Icon(
+                    Icons.bookmark_border_rounded,
+                    color: Colors.blue,
+                    size: 30,
+                  ),
+                  backgroundColor: Color.fromARGB(255, 184, 223, 241),
+                  elevation: 0,
+                ),
               ),
               Container(
                   child: Column(
-                children: <Widget>[
+                children: const <Widget>[
                   Padding(
                     padding:
                         EdgeInsets.only(left: 0, right: 10, top: 3, bottom: 1),

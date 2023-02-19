@@ -1,16 +1,16 @@
 import 'package:chatflutter/screen/auth/profile_screen.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:chatflutter/models/chatMessageModel.dart';
+import 'package:chatflutter/models/chatSavedModel.dart';
 
-class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key}) : super(key: key);
+class SavedScreen extends StatefulWidget {
+  const SavedScreen({Key? key}) : super(key: key);
 
   @override
-  _MessageScreenState createState() => _MessageScreenState();
+  _SavedScreenState createState() => _SavedScreenState();
 }
 
-class _MessageScreenState extends State<MessageScreen> {
+class _SavedScreenState extends State<SavedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +48,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 const Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'alek',
+                    'smiss',
                     style: TextStyle(
                       fontFamily: 'OpenSansBold',
                       fontSize: 18.0,
