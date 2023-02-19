@@ -1,4 +1,5 @@
 import 'package:chatflutter/screen/auth/profile_screen.dart';
+import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:chatflutter/models/chatMessageModel.dart';
@@ -15,29 +16,37 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: [
                 Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.keyboard_arrow_left_sharp,
-                    color: Colors.blue,
-                    size: 25,
-                  ),
-                ),
-                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ChatScreen()));
+                      },
+                      child: const Icon(
+                        Icons.keyboard_arrow_left_sharp,
+                        color: Colors.blue,
+                        size: 25,
+                      ),
+                    )),
+                const Padding(
                   padding: EdgeInsets.all(5.0),
                   child: CircleAvatar(
                     backgroundImage: AssetImage('assets/images/avatar1.jpg'),
                     radius: 20,
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
                     'alek',
@@ -49,7 +58,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
                 Spacer(),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.star,
@@ -57,7 +66,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     size: 23,
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.house,
@@ -65,7 +74,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     size: 23,
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.info_rounded,

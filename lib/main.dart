@@ -3,6 +3,7 @@ import 'package:chatflutter/screen/chat/message_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chatflutter/models/chatMessageModel.dart';
 import 'package:chatflutter/screen/auth/profile_screen.dart';
+import 'package:chatflutter/screen/auth/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProfileScreen(),
+      home: LoginScreen(),
     );
   }
 }

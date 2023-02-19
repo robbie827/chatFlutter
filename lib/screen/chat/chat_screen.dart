@@ -3,8 +3,6 @@ import 'package:chatflutter/components/groups_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../auth/profile_screen.dart';
-
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -13,7 +11,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  TextEditingController controller = TextEditingController(text: "test");
+  TextEditingController controller = TextEditingController(text: "");
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -21,15 +19,16 @@ class _ChatScreenState extends State<ChatScreen> {
         length: 2,
         child: Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-              toolbarHeight: 110,
+              toolbarHeight: 90,
               title: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(
                           Icons.inbox,
@@ -37,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           size: 18,
                         ),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text(
                           'MESSAGES',
@@ -48,18 +47,18 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         ),
                       ),
-                      const Spacer(),
+                      Spacer(),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ProfileScreen()),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => const ProfileScreen()),
+                            // );
                           },
-                          child: const Icon(
+                          child: Icon(
                             Icons.settings,
                             color: Colors.blue,
                             size: 23,
@@ -89,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       'People',
                       style: TextStyle(
                         fontFamily: 'OpenSansBold',
-                        fontSize: 18.0,
+                        fontSize: 15.0,
                         color: Colors.blue,
                       ),
                     )),
@@ -102,7 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       'Groups',
                       style: TextStyle(
                         fontFamily: 'OpenSansBold',
-                        fontSize: 18.0,
+                        fontSize: 15.0,
                         color: Colors.blue,
                       ),
                     ))

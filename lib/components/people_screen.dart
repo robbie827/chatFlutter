@@ -1,3 +1,4 @@
+import 'package:chatflutter/screen/chat/message_screen.dart';
 import 'package:flutter/material.dart';
 
 class PeopleScreen extends StatelessWidget {
@@ -19,43 +20,47 @@ class PeopleScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    radius: 33,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/avatar1.jpg'),
-                      radius: 30,
-                    )),
-                // child: Text(
-                //   'Robbie',
-                //   style: TextStyle(fontSize: 20.0),
-                // )
+              Padding(padding: EdgeInsets.only(left: 10)),
+              Padding(
+                padding: EdgeInsets.all(3),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MessageScreen()),
+                    );
+                  },
+                  child: const CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      radius: 26,
+                      child: CircleAvatar(
+                        backgroundImage:
+                            AssetImage('assets/images/avatar1.jpg'),
+                        radius: 24,
+                      )),
+                ),
               ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    radius: 33,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/avatar1.jpg'),
-                      radius: 30,
-                    )),
-                // child: Text(
-                //   'Robbie',
-                //   style: TextStyle(fontSize: 20.0),
-                // )
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: const CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    radius: 33,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/Florian.jpg'),
-                      radius: 30,
-                    )),
+              Padding(
+                padding: EdgeInsets.all(3),
+
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MessageScreen()),
+                    );
+                  },
+                  child: const CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      radius: 26,
+                      child: CircleAvatar(
+                        backgroundImage:
+                            AssetImage('assets/images/Florian.jpg'),
+                        radius: 24,
+                      )),
+                ),
                 // child: Text(
                 //   'Robbie',
                 //   style: TextStyle(fontSize: 20.0),
@@ -76,16 +81,16 @@ class PeopleScreen extends StatelessWidget {
                   child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 0, right: 10, top: 3, bottom: 1),
+                    padding:
+                        EdgeInsets.only(left: 0, right: 10, top: 3, bottom: 1),
                     child: Text(
                       'Saved Messages',
                       style: TextStyle(fontSize: 12.0, color: Colors.black),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15, right: 10, top: 3, bottom: 1),
+                    padding:
+                        EdgeInsets.only(left: 15, right: 10, top: 3, bottom: 1),
                     child: Text(
                       'Save Messages Secretly',
                       style: TextStyle(fontSize: 12.0, color: Colors.grey),
