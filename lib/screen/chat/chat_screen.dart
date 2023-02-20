@@ -13,9 +13,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final FocusNode _focus = FocusNode();
+  // final FocusNode _focus = FocusNode();
   bool isTapped = false;
-  late String data;
+  var issearching;
+  List<ChatUser> searchresult = [];
 
   TextEditingController controller = TextEditingController(text: "");
   List<ChatUser> chatUser = [
@@ -46,29 +47,44 @@ class _ChatScreenState extends State<ChatScreen> {
         time: "19 Jan")
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _focus.addListener(_onFocusChange);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _focus.addListener(_onFocusChange);
+  // }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _focus.removeListener(_onFocusChange);
-    _focus.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _focus.removeListener(_onFocusChange);
+  //   _focus.dispose();
+  // }
 
-  void _onFocusChange() {
-    debugPrint("Focus: ${_focus.hasFocus.toString()}");
-    if (_focus.hasFocus == true) {
-      setState(() {
-        isTapped = true;
-      });
-    } else {
-      setState(() {
-        isTapped = false;
-      });
+  // void _onFocusChange() {
+  //   debugPrint("Focus: ${_focus.hasFocus.toString()}");
+  //   if (_focus.hasFocus == true) {
+  //     setState(() {
+  //       isTapped = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       isTapped = false;
+  //     });
+  //   }
+  // }
+
+  void searchOperation(String searchText) {
+    searchresult.clear();
+    if (searchText != null) {
+      for (int i = 0; i < chatUser.length; i++) {
+        String data = chatUser[i].name;
+        if (data.toLowerCase().contains(searchText.toLowerCase())) {
+          setState(() {
+            searchresult.add(chatUser[i]);
+            print(searchresult);
+          });
+        }
+      }
     }
   }
 
@@ -130,13 +146,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     padding: const EdgeInsets.all(5.0),
                     child: CupertinoSearchTextField(
                       controller: controller,
-                      focusNode: _focus,
+                      // focusNode: _focus,
                       onChanged: (value) {
-                        if (value == null)
-                          print('hello');
-                        else
-                          print("okay");
-                        print(value);
+                        setState(() {
+                          issearching = value;
+                        });
+                        searchOperation(issearching);
                       },
                       onSubmitted: (value) {},
                       autocorrect: true,
@@ -174,22 +189,22 @@ class _ChatScreenState extends State<ChatScreen> {
               ]),
             ),
             body: TabBarView(children: [
-              isTapped == false
+              issearching == null || issearching.length == 0
                   ? const PeopleScreen()
                   : Container(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: chatUser.length,
+                        itemCount: searchresult.length,
                         padding: const EdgeInsets.only(top: 16),
-                        physics: const NeverScrollableScrollPhysics(),
+                        // physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           return ConversationList(
-                            name: chatUser[index].name,
-                            messageText: chatUser[index].messageText.toString(),
-                            imageUrl: chatUser[index].imageURL.toString(),
-                            time: chatUser[index].time.toString(),
-                            isMessageRead:
-                                (index == 0 || index == 3) ? true : false,
+                            name: searchresult[index].name,
+                            messageText:
+                                searchresult[index].messageText.toString(),
+                            imageUrl: searchresult[index].imageURL.toString(),
+                            time: searchresult[index].time.toString(),
+                            isMessageRead: (index == 0) ? true : false,
                           );
                         },
                       ),

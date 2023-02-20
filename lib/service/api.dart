@@ -2,15 +2,18 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class ApiService {
-  final base_url = 'http://127.0.0.1:8000';
+  final base_url = 'http://wh.saas.test/geniusBankWallet/api';
 
   Future<String> login(String email, password) async {
     try {
-      Response response = await post(Uri.parse('$base_url/chatify/api/login'),
-          body: {'email': email, 'password': password});
+      Response response = await post(Uri.parse('$base_url/user/login'), body: {
+        'email': email,
+        'password': password,
+        'device_name': "android"
+      });
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body.toString());
-        print(data['access_token']);
+        var data = response.body;
+        print(response.body);
         return 'success';
       } else {
         return 'failed';
