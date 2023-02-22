@@ -3,7 +3,6 @@ import 'package:chatflutter/models/send_message_model.dart';
 import 'package:chatflutter/screen/auth/profile_screen.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:chatflutter/models/chatMessageModel.dart';
 import 'package:chatflutter/service/api.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _MessageScreenState extends State<MessageScreen> {
   void sendMessage(int id, String type, String message, String temporaryMsgId) {
     _apiService.sendMessage(id, type, message, temporaryMsgId).then((value) {
       setState(() {
-        sendMessages = value!;
+        getMessages(widget.userId);
       });
     });
   }
