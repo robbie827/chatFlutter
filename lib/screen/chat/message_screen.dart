@@ -1,16 +1,57 @@
+import 'package:chatflutter/models/messages_model.dart';
+import 'package:chatflutter/models/send_message_model.dart';
 import 'package:chatflutter/screen/auth/profile_screen.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chatflutter/models/chatMessageModel.dart';
+import 'package:chatflutter/service/api.dart';
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key}) : super(key: key);
+  final String imageUrl;
+  final int userId;
+  final String name;
+
+  const MessageScreen(
+      {Key? key,
+      required this.userId,
+      required this.name,
+      required this.imageUrl})
+      : super(key: key);
 
   @override
   _MessageScreenState createState() => _MessageScreenState();
 }
 
 class _MessageScreenState extends State<MessageScreen> {
+  final ApiService _apiService = ApiService();
+
+  List<MessageModel> Messages = [];
+  List<SendMessageModel> sendMessages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getMessages(widget.userId);
+  }
+
+  void getMessages(int id) {
+    _apiService.getMessages(id).then((value) {
+      setState(() {
+        Messages = value!;
+      });
+    });
+  }
+
+  void sendMessage(int id, String type, String message, String temporaryMsgId) {
+    _apiService.sendMessage(id, type, message, temporaryMsgId).then((value) {
+      setState(() {
+        sendMessages = value!;
+      });
+    });
+  }
+
+  TextEditingController messageController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +71,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ChatScreen()));
+                                builder: (context) => ChatScreen()));
                       },
                       child: const Icon(
                         Icons.keyboard_arrow_left_sharp,
@@ -38,18 +79,21 @@ class _MessageScreenState extends State<MessageScreen> {
                         size: 25,
                       ),
                     )),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(5.0),
                   child: CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/avatar1.jpg'),
+                    backgroundImage: NetworkImage((widget.imageUrl == "null" ||
+                            widget.imageUrl.isEmpty)
+                        ? 'http://wh.saas.test/geniusBankWallet/assets/user/img/user.jpg'
+                        : 'http://wh.saas.test/geniusBankWallet/assets/images/${widget.imageUrl}'),
                     radius: 20,
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(5.0),
                   child: Text(
-                    'alek',
-                    style: TextStyle(
+                    widget.name.replaceRange(8, widget.name.length, '...'),
+                    style: const TextStyle(
                       fontFamily: 'OpenSansBold',
                       fontSize: 18.0,
                       color: Colors.black,
@@ -58,7 +102,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
                 Spacer(),
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(4),
                   child: Icon(
                     Icons.star,
                     color: Color.fromARGB(255, 236, 204, 63),
@@ -66,7 +110,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(4),
                   child: Icon(
                     Icons.house,
                     color: Colors.blue,
@@ -74,7 +118,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(4),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -96,35 +140,67 @@ class _MessageScreenState extends State<MessageScreen> {
       ),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: messages.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                padding:
-                    EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
-                child: Align(
-                  alignment: (messages[index].messageType == "receiver"
-                      ? Alignment.topLeft
-                      : Alignment.topRight),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType == "receiver"
-                          ? Colors.grey.shade200
-                          : Colors.blue[200]),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      messages[index].messageContent,
-                      style: TextStyle(fontSize: 15),
+          // ListView.builder(
+          //   itemCount: Messages.length,
+          //   shrinkWrap: true,
+          //   padding: EdgeInsets.only(top: 10, bottom: 10),
+          //   physics: NeverScrollableScrollPhysics(),
+          //   itemBuilder: (context, index) {
+          //     return Container(
+          //       padding:
+          //           EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+          //       child: Align(
+          //         alignment: (Messages[index].fromId == widget.userId
+          //             ? Alignment.topLeft
+          //             : Alignment.topRight),
+          //         child: Container(
+          //           decoration: BoxDecoration(
+          //             borderRadius: BorderRadius.circular(20),
+          //             color: (Messages[index].fromId == widget.userId
+          //                 ? Colors.grey.shade200
+          //                 : Colors.blue[200]),
+          //           ),
+          //           padding: EdgeInsets.all(16),
+          //           child: Text(
+          //             Messages[index].body,
+          //             style: TextStyle(fontSize: 15),
+          //           ),
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                for (var element in Messages)
+                  Container(
+                    padding: EdgeInsets.only(
+                        left: 16, right: 16, top: 10, bottom: 10),
+                    child: Align(
+                      alignment: (element.fromId == widget.userId
+                          ? Alignment.topLeft
+                          : Alignment.topRight),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: (element.fromId == widget.userId
+                              ? Colors.grey.shade200
+                              : Colors.blue[200]),
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          element.body,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
                     ),
                   ),
+                const SizedBox(
+                  height: 70,
                 ),
-              );
-            },
+              ],
+            ),
           ),
           Align(
             alignment: Alignment.bottomLeft,
@@ -144,29 +220,33 @@ class _MessageScreenState extends State<MessageScreen> {
                         color: Colors.lightBlue,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.add,
                         color: Colors.white,
                         size: 20,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: messageController,
+                      decoration: const InputDecoration(
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      sendMessage(widget.userId, "user",
+                          messageController.text.toString(), "temp_1");
+                    },
                     child: Icon(
                       Icons.send,
                       color: Colors.white,

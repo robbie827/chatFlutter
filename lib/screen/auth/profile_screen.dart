@@ -30,11 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   size: 20,
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MessageScreen()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => MessageScreen(userId: userId, name: name, imageUrl: imageUrl)),
+                  // );
                 },
               ),
             ),

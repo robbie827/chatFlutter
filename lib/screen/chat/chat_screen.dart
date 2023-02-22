@@ -1,12 +1,13 @@
-import 'package:chatflutter/components/conversationList.dart';
+import 'package:chatflutter/components/conversation_list.dart';
 import 'package:chatflutter/components/people_screen.dart';
 import 'package:chatflutter/components/groups_screen.dart';
-import 'package:chatflutter/models/chatUsersModel.dart';
+import 'package:chatflutter/models/chat_users_model.dart';
+import 'package:chatflutter/service/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  ChatScreen({Key? key}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -14,38 +15,27 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   // final FocusNode _focus = FocusNode();
+  final ApiService _apiService = ApiService();
   bool isTapped = false;
   var issearching;
   List<ChatUser> searchresult = [];
+  List<ChatUser> allUsers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getAllUsers();
+  }
+
+  void getAllUsers() {
+    _apiService.getUsers().then((value) {
+      setState(() {
+        allUsers = value!;
+      });
+    });
+  }
 
   TextEditingController controller = TextEditingController(text: "");
-  List<ChatUser> chatUser = [
-    ChatUser(
-        name: "Alek",
-        messageText: "Awesome Setup",
-        imageURL: "assets/images/avatar1.jpg",
-        time: "Now"),
-    ChatUser(
-        name: "Robbie",
-        messageText: "That's great",
-        imageURL: "assets/images/Florian.jpg",
-        time: "Yesterday"),
-    ChatUser(
-        name: "Joy",
-        messageText: "How are u?",
-        imageURL: "assets/images/avatar1.jpg",
-        time: "31 Jan"),
-    ChatUser(
-        name: "Robbie123",
-        messageText: "Who are u?",
-        imageURL: "assets/images/avatar1.jpg",
-        time: "25 Jan"),
-    ChatUser(
-        name: "Robbie12345",
-        messageText: "What is this?",
-        imageURL: "assets/images/avatar1.jpg",
-        time: "19 Jan")
-  ];
 
   // @override
   // void initState() {
@@ -76,12 +66,11 @@ class _ChatScreenState extends State<ChatScreen> {
   void searchOperation(String searchText) {
     searchresult.clear();
     if (searchText != null) {
-      for (int i = 0; i < chatUser.length; i++) {
-        String data = chatUser[i].name;
+      for (int i = 0; i < allUsers.length; i++) {
+        String data = allUsers[i].name;
         if (data.toLowerCase().contains(searchText.toLowerCase())) {
           setState(() {
-            searchresult.add(chatUser[i]);
-            print(searchresult);
+            searchresult.add(allUsers[i]);
           });
         }
       }
@@ -124,7 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       Spacer(),
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: InkWell(
                           onTap: () {
                             // Navigator.push(
@@ -190,7 +179,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             body: TabBarView(children: [
               issearching == null || issearching.length == 0
-                  ? const PeopleScreen()
+                  ? PeopleScreen()
                   : Container(
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -200,11 +189,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         itemBuilder: (context, index) {
                           return ConversationList(
                             name: searchresult[index].name,
-                            messageText:
-                                searchresult[index].messageText.toString(),
-                            imageUrl: searchresult[index].imageURL.toString(),
-                            time: searchresult[index].time.toString(),
-                            isMessageRead: (index == 0) ? true : false,
+                            imageUrl: searchresult[index].photo,
+                            id: searchresult[index].id,
                           );
                         },
                       ),

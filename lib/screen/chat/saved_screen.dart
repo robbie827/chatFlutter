@@ -30,7 +30,7 @@ class _SavedScreenState extends State<SavedScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ChatScreen()));
+                                builder: (context) => ChatScreen()));
                       },
                       child: const Icon(
                         Icons.keyboard_arrow_left_sharp,

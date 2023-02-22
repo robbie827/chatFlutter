@@ -27,13 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login(String email, String password) async {
     _apiService.login(email, password).then((value) {
-      if (value == 'success') {
-        Navigator.push(
+      if (value.contains('success')) {
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ChatScreen()),
+          MaterialPageRoute(builder: (context) => ChatScreen()),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Login failed"),
           backgroundColor: Colors.red,
         ));
