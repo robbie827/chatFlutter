@@ -27,10 +27,10 @@ class _SavedScreenState extends State<SavedScreen> {
                     padding: EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatScreen()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ChatScreen()));
                       },
                       child: const Icon(
                         Icons.keyboard_arrow_left_sharp,
@@ -77,11 +77,11 @@ class _SavedScreenState extends State<SavedScreen> {
                     padding: EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileScreen()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const ProfileScreen()),
+                        // );
                       },
                       child: const Icon(
                         Icons.info_rounded,

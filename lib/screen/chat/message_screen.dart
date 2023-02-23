@@ -33,7 +33,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   void initState() {
-    Star(widget.userId);
+    // Star(widget.userId);
     super.initState();
 
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
@@ -171,7 +171,10 @@ class _MessageScreenState extends State<MessageScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ProfileScreen()),
+                              builder: (context) => ProfileScreen(
+                                  userId: widget.userId,
+                                  name: widget.name.toString(),
+                                  imageUrl: widget.imageUrl.toString())),
                         );
                       },
                       child: const Icon(

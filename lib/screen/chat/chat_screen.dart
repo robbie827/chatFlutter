@@ -124,7 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           },
                           child: const Icon(
                             Icons.settings,
-                            color: Colors.blue,
+                            color: Colors.transparent,
                             size: 23,
                           ),
                         ),

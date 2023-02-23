@@ -1,10 +1,17 @@
-import 'package:chatflutter/models/chatMessageModel.dart';
-import 'package:chatflutter/screen/chat/chat_screen.dart';
-import 'package:chatflutter/screen/chat/message_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../chat/message_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final String imageUrl;
+  final int userId;
+  final String name;
+  const ProfileScreen({
+    Key? key,
+    required this.userId,
+    required this.name,
+    required this.imageUrl,
+  }) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -30,11 +37,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   size: 20,
                 ),
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => MessageScreen(userId: userId, name: name, imageUrl: imageUrl)),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MessageScreen(
+                            userId: widget.userId,
+                            name: widget.name,
+                            imageUrl: widget.imageUrl)),
+                  );
                 },
               ),
             ),
@@ -45,16 +55,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               alignment: Alignment.center,
               child: Column(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                       backgroundColor: Colors.blue,
                       radius: 64,
                       child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/avatar1.jpg'),
+                        backgroundImage: NetworkImage((widget.imageUrl ==
+                                    "null" ||
+                                widget.imageUrl.isEmpty)
+                            ? 'http://wh.saas.test/geniusBankWallet/assets/user/img/user.jpg'
+                            : 'http://wh.saas.test/geniusBankWallet/assets/images/${widget.imageUrl}'),
                         radius: 60,
                       )),
-                  const Text(
-                    "Smiss",
+                  Text(
+                    widget.name,
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Padding(
@@ -90,10 +103,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Expanded(
                       child: Container(
-                        decoration: const BoxDecoration(color: Colors.yellow),
+                        decoration:
+                            const BoxDecoration(color: Colors.transparent),
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.center,
-                        child: Text("Photo Content"),
+                        child: Text("there is nothing"),
                       ),
                     )
                   ],
