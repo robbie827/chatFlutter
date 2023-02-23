@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "968428533520",
+    "project_id": "test-chat-app-fade2",
+    "storage_bucket": "test-chat-app-fade2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968428533520:android:93cb8f10bfc01adff41795",
+        "android_client_info": {
+          "package_name": "com.hyon.chatflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968428533520-re3kbl2s2l9lv2g3f90k04s71ljk06jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4UUYvmWpSJcebLZdpKye6G8qjJXfc6G8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968428533520-re3kbl2s2l9lv2g3f90k04s71ljk06jf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

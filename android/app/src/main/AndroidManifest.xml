@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chatflutter">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application/>
    <application
         android:label="chatflutter"
         android:name="${applicationName}"

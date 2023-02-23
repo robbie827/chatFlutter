@@ -1,15 +1,23 @@
 import 'dart:convert';
-import 'dart:math';
+
 import 'package:chatflutter/models/favorites_model.dart';
 import 'package:chatflutter/models/messages_model.dart';
 import 'package:chatflutter/models/send_message_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:chatflutter/models/chat_users_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   final baseUrl = 'http://wh.saas.test/geniusBankWallet/api';
+
+// final myChannel = await pusher.subscribe(
+//   channelName: "my-channel"
+//   onEvent: onEvent
+// );
+
+// void onEvent(PusherEvent event) {
+//   log("onEvent: $event");
+// }
 
   Future<String> login(String email, password) async {
     try {
@@ -131,6 +139,49 @@ class ApiService {
         var data = json.decode(response.body)['message'];
         print(data);
         return sendMessageFromJson(data);
+      }
+    } catch (e) {}
+  }
+
+  // file upload service
+  Future<bool> addImage(Map<String, String> body, String filepath) async {
+    String addimageUrl = '$baseUrl/sendMessage';
+    Map<String, String> headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+    var request = MultipartRequest('POST', Uri.parse(addimageUrl))
+      ..fields.addAll(body)
+      ..headers.addAll(headers)
+      ..files.add(await MultipartFile.fromPath('image', filepath));
+
+    var response = await request.send();
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool?> Star(int id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      Response response = await post(
+        Uri.parse('$baseUrl/star'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {
+          "user_id": id.toString(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var data = response.body;
+        print(data);
+        var result = jsonDecode(data);
+        print(result);
       }
     } catch (e) {}
   }

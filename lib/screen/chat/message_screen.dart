@@ -4,6 +4,7 @@ import 'package:chatflutter/screen/auth/profile_screen.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chatflutter/service/api.dart';
+import 'dart:async';
 
 class MessageScreen extends StatefulWidget {
   final String imageUrl;
@@ -22,21 +23,40 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
+  late Timer _timer;
   final ApiService _apiService = ApiService();
 
   List<MessageModel> Messages = [];
   List<SendMessageModel> sendMessages = [];
+  List<MessageModel> reversedMessages = [];
+  bool favorite = false;
 
   @override
   void initState() {
+    Star(widget.userId);
     super.initState();
-    getMessages(widget.userId);
+
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      getMessages(widget.userId);
+    });
+  }
+
+  void Star(int id) {
+    _apiService.Star(id).then(
+      (value) {
+        setState(() {
+          favorite = value!;
+          print(favorite);
+        });
+      },
+    );
   }
 
   void getMessages(int id) {
     _apiService.getMessages(id).then((value) {
       setState(() {
         Messages = value!;
+        reversedMessages = Messages.reversed.toList();
       });
     });
   }
@@ -44,9 +64,16 @@ class _MessageScreenState extends State<MessageScreen> {
   void sendMessage(int id, String type, String message, String temporaryMsgId) {
     _apiService.sendMessage(id, type, message, temporaryMsgId).then((value) {
       setState(() {
+        messageController.clear();
         getMessages(widget.userId);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   TextEditingController messageController = TextEditingController();
@@ -99,23 +126,44 @@ class _MessageScreenState extends State<MessageScreen> {
                     ),
                   ),
                 ),
-                Spacer(),
-                const Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Icon(
-                    Icons.star,
-                    color: Color.fromARGB(255, 236, 204, 63),
-                    size: 23,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Icon(
-                    Icons.house,
-                    color: Colors.blue,
-                    size: 23,
-                  ),
-                ),
+                const Spacer(),
+                favorite == false
+                    ? Padding(
+                        padding: EdgeInsets.all(4),
+                        child: InkWell(
+                          onTap: () {
+                            favorite = true;
+                            // Star(widget.userId);
+                          },
+                          child: const Icon(
+                            Icons.star,
+                            color: Color.fromARGB(255, 236, 204, 63),
+                            size: 23,
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.all(4),
+                        child: InkWell(
+                          onTap: () {
+                            favorite = false;
+                            // Star(widget.userId);
+                          },
+                          child: const Icon(
+                            Icons.star,
+                            color: Colors.grey,
+                            size: 23,
+                          ),
+                        ),
+                      ),
+                // const Padding(
+                //   padding: EdgeInsets.all(4),
+                //   child: Icon(
+                //     Icons.house,
+                //     color: Colors.blue,
+                //     size: 23,
+                //   ),
+                // ),
                 Padding(
                     padding: EdgeInsets.all(4),
                     child: InkWell(
@@ -172,9 +220,9 @@ class _MessageScreenState extends State<MessageScreen> {
           SingleChildScrollView(
             child: Column(
               children: [
-                for (var element in Messages)
+                for (var element in reversedMessages)
                   Container(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         left: 16, right: 16, top: 10, bottom: 10),
                     child: Align(
                       alignment: (element.fromId == widget.userId
