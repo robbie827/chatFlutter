@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chatflutter/models/data_model.dart';
 import 'package:chatflutter/models/favorites_model.dart';
 import 'package:chatflutter/models/messages_model.dart';
 import 'package:chatflutter/models/send_message_model.dart';
@@ -182,6 +183,25 @@ class ApiService {
         print(data);
         var result = jsonDecode(data);
         print(result);
+      }
+    } catch (e) {}
+  }
+
+  Future<List<DataModel>?> data() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      Response response = await post(
+        Uri.parse('$baseUrl/user/dashboard'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var data = response.body;
+        print(data);
       }
     } catch (e) {}
   }
