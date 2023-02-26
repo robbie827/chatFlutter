@@ -1,30 +1,28 @@
-import 'dart:ffi';
-
 import 'package:chatflutter/models/transaction_model.dart';
 import 'package:chatflutter/models/user_model.dart';
 import 'package:chatflutter/models/wallet_model.dart';
 
-List<DataModel> dataModelFromJson(data) =>
-    List<DataModel>.from(data.map((x) => DataModel.fromjson(x)));
+// List<DashboardModel> dataModelFromJson(data) =>
+//     List<DashboardModel>.from(data.map((x) => DashboardModel.fromJson(x)));
 
-class DataModel {
+class DashboardModel {
   UserModel? user;
-  WalletModel wallets;
-  TransactionModel transactions;
-  Float userBalance;
+  List<WalletModel>? wallets;
+  List<TransactionModel>? transactions;
+  double? userBalance;
 
-  DataModel({
+  DashboardModel({
     this.user,
-    required this.wallets,
-    required this.transactions,
-    required this.userBalance,
+    this.wallets,
+    this.transactions,
+    this.userBalance,
   });
 
-  factory DataModel.fromjson(Map<String, dynamic> json) {
-    return DataModel(
+  factory DashboardModel.fromJson(Map<String, dynamic> json) {
+    return DashboardModel(
       user: UserModel.fromJson(json["user"]),
-      wallets: WalletModel.fromJson(json["wallets"]),
-      transactions: TransactionModel.fromJson(json["transactions"]),
+      wallets: walletModelFromJson(json["wallets"]),
+      transactions: transactionModelFromJson(json["transactions"]),
       userBalance: json["userBalance"],
     );
   }

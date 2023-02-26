@@ -24,7 +24,7 @@ class _SavedScreenState extends State<SavedScreen> {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
                         // Navigator.push(
@@ -56,7 +56,7 @@ class _SavedScreenState extends State<SavedScreen> {
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(

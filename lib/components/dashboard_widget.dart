@@ -1,17 +1,29 @@
+import 'package:chatflutter/models/transaction_model.dart';
+import 'package:chatflutter/models/wallet_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DashboardWidget extends StatefulWidget {
-  const DashboardWidget({Key? key}) : super(key: key);
+  final double? userBalance;
+  final List<WalletModel>? wallets;
+  final List<TransactionModel>? transactions;
+
+  const DashboardWidget({
+    Key? key,
+    this.transactions,
+    this.userBalance,
+    this.wallets,
+  }) : super(key: key);
 
   @override
   _DashboardWidgetState createState() => _DashboardWidgetState();
 }
 
 class _DashboardWidgetState extends State<DashboardWidget> {
+  String dropdownValue = 'EUR';
+
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = 'USD';
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 30,
@@ -80,7 +92,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                               },
                             ),
                             Text(
-                              "€6777.73",
+                              widget.userBalance!.toInt().toString(),
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             )
@@ -473,7 +485,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                       ]),
                   margin: const EdgeInsets.only(top: 0, left: 10, right: 10),
                   child: Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 10,
                       ),

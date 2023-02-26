@@ -1,7 +1,5 @@
-import 'dart:ffi';
-
-List<CurrencyModel> favoritesModelFromJson(data) =>
-    List<CurrencyModel>.from(data.map((x) => CurrencyModel.fromjson(x)));
+List<CurrencyModel> currencyModelFromJson(data) =>
+    List<CurrencyModel>.from(data.map((x) => CurrencyModel.fromJson(x)));
 
 class CurrencyModel {
   int id;
@@ -11,7 +9,7 @@ class CurrencyModel {
   String currName;
   int type;
   int status;
-  Float rate;
+  String rate;
 
   CurrencyModel({
     required this.id,
@@ -24,7 +22,7 @@ class CurrencyModel {
     required this.rate,
   });
 
-  factory CurrencyModel.fromjson(Map<String, dynamic> json) {
+  factory CurrencyModel.fromJson(Map<String, dynamic> json) {
     return CurrencyModel(
         id: json["id"],
         isDefault: json["is_default"],

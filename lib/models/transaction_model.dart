@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:chatflutter/models/currency_model.dart';
 
 List<TransactionModel> transactionModelFromJson(data) =>
@@ -11,15 +10,14 @@ class TransactionModel {
   int userType;
   int currencyId;
   int walletId;
-  Float charge;
-  Float amount;
+  String charge;
+  String amount;
   String remark;
   String details;
   String data;
-
   String createdAt;
   String updatedAt;
-  CurrencyModel currency;
+  CurrencyModel? currency;
 
   TransactionModel({
     required this.id,
@@ -35,7 +33,7 @@ class TransactionModel {
     required this.data,
     required this.createdAt,
     required this.updatedAt,
-    required this.currency,
+    this.currency,
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
@@ -53,7 +51,7 @@ class TransactionModel {
       data: json["data"],
       createdAt: json["created_at"],
       updatedAt: json["updated_at"],
-      currency: CurrencyModel.fromjson(json["currency"]),
+      currency: CurrencyModel.fromJson(json["currency"]),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:chatflutter/models/data_model.dart';
 import 'package:chatflutter/models/favorites_model.dart';
 import 'package:chatflutter/models/messages_model.dart';
 import 'package:chatflutter/models/send_message_model.dart';
+import 'package:chatflutter/models/user_model.dart';
 import 'package:http/http.dart';
 import 'package:chatflutter/models/chat_users_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -138,7 +139,6 @@ class ApiService {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body)['message'];
-        print(data);
         return sendMessageFromJson(data);
       }
     } catch (e) {}
@@ -180,17 +180,17 @@ class ApiService {
 
       if (response.statusCode == 200) {
         var data = response.body;
-        print(data);
+
         var result = jsonDecode(data);
-        print(result);
       }
     } catch (e) {}
   }
 
-  Future<List<DataModel>?> data() async {
+  Future<DashboardModel?> getData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
+      // var token = "260|Q0NWWHRM5i5bdDUQQY4BP4ZA13JOOFyQUCUu81gp";
 
       Response response = await post(
         Uri.parse('$baseUrl/user/dashboard'),
@@ -200,8 +200,8 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        var data = response.body;
-        print(data);
+        var data = json.decode(response.body)['data'];
+        return DashboardModel.fromJson(data);
       }
     } catch (e) {}
   }

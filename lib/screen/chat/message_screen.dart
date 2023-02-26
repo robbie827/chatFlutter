@@ -46,7 +46,6 @@ class _MessageScreenState extends State<MessageScreen> {
       (value) {
         setState(() {
           favorite = value!;
-          print(favorite);
         });
       },
     );
@@ -247,7 +246,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     ),
                   ),
                 const SizedBox(
-                  height: 70,
+                  height: 100,
                 ),
               ],
             ),

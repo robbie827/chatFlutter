@@ -10,8 +10,6 @@ class FavoriteUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(imageUrl == null);
-
     return Padding(
       padding: const EdgeInsets.all(8),
       child: InkWell(
@@ -34,7 +32,7 @@ class FavoriteUserWidget extends StatelessWidget {
                   backgroundImage: NetworkImage((imageUrl == null ||
                           imageUrl!.isEmpty)
                       ? 'http://wh.saas.test/geniusBankWallet/assets/user/img/user.jpg'
-                      : 'http://wh.saas.test/geniusBankWallet/assets/images/$imageUrl!'),
+                      : 'http://wh.saas.test/geniusBankWallet/assets/images/$imageUrl'),
                   radius: 20,
                 )),
             Text(name!.replaceRange(6, name!.length, '...')),

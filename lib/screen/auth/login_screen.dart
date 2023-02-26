@@ -1,4 +1,5 @@
 import 'package:chatflutter/screen/chat/chat_screen.dart';
+import 'package:chatflutter/screen/home/home_screen.dart';
 import 'package:chatflutter/service/api.dart';
 import 'package:flutter/material.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -30,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (value.contains('success')) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ChatScreen()),
+          MaterialPageRoute(builder: (context) => HomeScreen()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -91,13 +92,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  //forgot password screen
-                },
-                child: const Text(
-                  'Forgot Password',
-                ),
+              SizedBox(
+                height: 30,
               ),
               Container(
                 height: 50,
