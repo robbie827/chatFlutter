@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:chatflutter/service/api.dart';
 import '../chat/message_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,6 +18,28 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final ApiService _apiService = ApiService();
+
+  void Delete(int id) async {
+    _apiService.Delete(id).then((value) {
+      if (value == 'success') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MessageScreen(
+                  userId: widget.userId,
+                  name: widget.name,
+                  imageUrl: widget.imageUrl)),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Delete failed \n please again"),
+          backgroundColor: Colors.red,
+        ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +95,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        showAlertDialog(context);
+                      },
                       icon: const Icon(
                         Icons.restore_from_trash_outlined,
                         size: 24.0,
@@ -117,39 +141,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      // body: Column(
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   children: [
-      //     // Align(
-      //     //   alignment: Alignment.topLeft,
-      //     //   child: InkWell(
-      //     //     child: const Icon(
-      //     //       Icons.cancel,
-      //     //       color: Colors.blue,
-      //     //       size: 20,
-      //     //     ),
-      //     //     onTap: () {
-      //     //       print("object");
-      //     //     },
-      //     //   ),
-      //     // ),
-      //     CircleAvatar(
-      //         backgroundColor: Colors.blue,
-      //         radius: 64,
-      //         child: CircleAvatar(
-      //           backgroundImage: AssetImage('assets/images/avatar1.jpg'),
-      //           radius: 60,
-      //         )),
-      //     Text(
-      //       'alek',
-      //       style: TextStyle(
-      //         fontFamily: 'OpenSansBold',
-      //         fontSize: 12.0,
-      //         color: Colors.black,
-      //       ),
-      //     ),
-      //   ],
-      // ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    final ApiService _apiService = ApiService();
+    // set up the buttons
+    Widget cancelButton = InkWell(
+      child: Text("Cancel"),
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = InkWell(
+      child: const Text(
+        "Delete",
+        style: TextStyle(color: Colors.red),
+      ),
+      onTap: () {
+        print("delete");
+        Delete(widget.userId);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Text(
+          "Are you sure you want to delete this? \n You can not undo this action."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

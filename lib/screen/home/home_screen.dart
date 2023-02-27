@@ -1,4 +1,5 @@
 import 'package:chatflutter/models/wallet_model.dart';
+import 'package:chatflutter/screen/auth/login_screen.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:chatflutter/service/api.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
         print(transactions[0].createdAt);
       });
     });
+  }
+
+  void logout() {
+    _apiService.logout().then((value) {});
   }
 
   @override
@@ -180,7 +185,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   value: 1,
                 ),
                 PopupMenuItem(
-                  child: Text("Logout"),
+                  child: InkWell(
+                      onTap: () {
+                        print("logout");
+                        logout();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                        );
+                      },
+                      child: Text("Logout")),
                   value: 1,
                 ),
               ],

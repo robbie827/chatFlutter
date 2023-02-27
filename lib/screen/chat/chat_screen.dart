@@ -6,6 +6,9 @@ import 'package:chatflutter/service/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../auth/login_screen.dart';
+import '../home/home_screen.dart';
+
 class ChatScreen extends StatefulWidget {
   ChatScreen({Key? key}) : super(key: key);
 
@@ -20,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
   var issearching;
   List<ChatUser> searchresult = [];
   List<ChatUser> allUsers = [];
-
+  String? imageUrl = null;
   @override
   void initState() {
     super.initState();
@@ -77,6 +80,10 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void logout() {
+    _apiService.logout().then((value) {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -86,9 +93,114 @@ class _ChatScreenState extends State<ChatScreen> {
             appBar: AppBar(
               automaticallyImplyLeading: false,
               backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-              toolbarHeight: 90,
+              toolbarHeight: 130,
               title: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.only(
+                              top: 3, bottom: 3, left: 10, right: 10)),
+                      Container(
+                        child: IconButton(
+                          icon: Image.network(
+                              'http://wh.saas.test/geniusBankWallet/assets/images/GZrLGJFQ1674480311.jpg'),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                            );
+                          },
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                        padding: EdgeInsets.only(
+                            top: 3, bottom: 3, left: 10, right: 10),
+                        decoration: const BoxDecoration(
+                            color: Colors.transparent,
+                            shape: BoxShape.rectangle),
+                        child: PopupMenuButton(
+                          child: ClipOval(
+                            child: SizedBox.fromSize(
+                              size: Size.fromRadius(20), // Image radius
+                              child: Image.network((imageUrl == null ||
+                                      imageUrl == "")
+                                  ? 'http://wh.saas.test/geniusBankWallet/assets/user/img/user.jpg'
+                                  : 'http://wh.saas.test/geniusBankWallet/assets/images/${imageUrl}'),
+                            ),
+                          ),
+                          color: Colors.white, // color setting
+
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              child: Text(
+                                "Edit Profile",
+                              ),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Module"),
+                              value: 2,
+                            ),
+                            PopupMenuItem(
+                              child: InkWell(
+                                  onTap: () {
+                                    print("here");
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ChatScreen()),
+                                    );
+                                  },
+                                  child: Text("Chat")),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Change Password"),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Pricing Plan"),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Security"),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Login Activity"),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: Text("AML/KYC"),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Pincode"),
+                              value: 1,
+                            ),
+                            PopupMenuItem(
+                              child: InkWell(
+                                  onTap: () {
+                                    print("logout");
+                                    logout();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginScreen()),
+                                    );
+                                  },
+                                  child: Text("Logout")),
+                              value: 1,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -114,20 +226,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       Spacer(),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => const ProfileScreen()),
-                            // );
-                          },
-                          child: const Icon(
-                            Icons.settings,
-                            color: Colors.transparent,
-                            size: 23,
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -150,31 +248,31 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               bottom: const TabBar(tabs: [
                 Tab(
-                    icon: Icon(
-                      Icons.supervised_user_circle,
-                      color: Colors.blue,
-                    ),
+                    // icon: Icon(
+                    //   Icons.supervised_user_circle,
+                    //   color: Colors.blue,
+                    // ),
                     child: Text(
-                      'People',
-                      style: TextStyle(
-                        fontFamily: 'OpenSansBold',
-                        fontSize: 15.0,
-                        color: Colors.blue,
-                      ),
-                    )),
+                  'People',
+                  style: TextStyle(
+                    fontFamily: 'OpenSansBold',
+                    fontSize: 15.0,
+                    color: Colors.blue,
+                  ),
+                )),
                 Tab(
-                    icon: Icon(
-                      Icons.groups,
-                      color: Colors.blue,
-                    ),
+                    // icon: Icon(
+                    //   Icons.groups,
+                    //   color: Colors.blue,
+                    // ),
                     child: Text(
-                      'Groups',
-                      style: TextStyle(
-                        fontFamily: 'OpenSansBold',
-                        fontSize: 15.0,
-                        color: Colors.blue,
-                      ),
-                    ))
+                  'Groups',
+                  style: TextStyle(
+                    fontFamily: 'OpenSansBold',
+                    fontSize: 15.0,
+                    color: Colors.blue,
+                  ),
+                ))
               ]),
             ),
             body: TabBarView(children: [

@@ -10,28 +10,34 @@ import 'package:chatflutter/models/chat_users_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  final baseUrl = 'http://wh.saas.test/geniusBankWallet/api';
-
-// final myChannel = await pusher.subscribe(
-//   channelName: "my-channel"
-//   onEvent: onEvent
-// );
-
-// void onEvent(PusherEvent event) {
-//   log("onEvent: $event");
-// }
+  final baseUrl = 'http://wh.saas.test/geniusBankWallet/api/user';
 
   Future<String> login(String email, password) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      Response response = await post(Uri.parse('$baseUrl/user/login'), body: {
+      Response response = await post(Uri.parse('$baseUrl/login'), body: {
         'email': email,
         'password': password,
-        'device_name': "android"
+        'device_name': "postman"
       });
       if (response.statusCode == 200) {
-        var token = response.body;
+        var token = json.decode(response.body)["access_token"];
         prefs.setString('token', token);
+        return 'success';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String> logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove('token');
+      Response response = await post(Uri.parse('$baseUrl/logout'));
+      if (response.statusCode == 200) {
         return 'success';
       } else {
         return 'failed';
@@ -190,10 +196,9 @@ class ApiService {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
-      // var token = "260|Q0NWWHRM5i5bdDUQQY4BP4ZA13JOOFyQUCUu81gp";
 
       Response response = await post(
-        Uri.parse('$baseUrl/user/dashboard'),
+        Uri.parse('$baseUrl/dashboard'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -202,6 +207,29 @@ class ApiService {
       if (response.statusCode == 200) {
         var data = json.decode(response.body)['data'];
         return DashboardModel.fromJson(data);
+      }
+    } catch (e) {}
+  }
+
+  Future<String?> Delete(int id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      Response response = await post(
+        Uri.parse('$baseUrl/deleteConversation'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {
+          "user_id": id.toString(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return "success";
+      } else {
+        return 'failed';
       }
     } catch (e) {}
   }

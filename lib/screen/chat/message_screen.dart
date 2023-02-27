@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:chatflutter/service/api.dart';
 import 'dart:async';
 
+import '../auth/login_screen.dart';
+import '../home/home_screen.dart';
+
 class MessageScreen extends StatefulWidget {
   final String imageUrl;
   final int userId;
@@ -30,15 +33,16 @@ class _MessageScreenState extends State<MessageScreen> {
   List<SendMessageModel> sendMessages = [];
   List<MessageModel> reversedMessages = [];
   bool favorite = false;
-
+  String? imageUrl = null;
   @override
   void initState() {
     // Star(widget.userId);
     super.initState();
-
-    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      getMessages(widget.userId);
-    });
+    if (mounted) {
+      _timer = new Timer.periodic(const Duration(seconds: 2), (timer) {
+        getMessages(widget.userId);
+      });
+    }
   }
 
   void Star(int id) {
@@ -69,6 +73,10 @@ class _MessageScreenState extends State<MessageScreen> {
     });
   }
 
+  void logout() {
+    _apiService.logout().then((value) {});
+  }
+
   @override
   void dispose() {
     _timer.cancel();
@@ -81,10 +89,114 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(
+                        top: 3, bottom: 3, left: 10, right: 10)),
+                Container(
+                  child: IconButton(
+                    icon: Image.network(
+                        'http://wh.saas.test/geniusBankWallet/assets/images/GZrLGJFQ1674480311.jpg'),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                    },
+                  ),
+                ),
+                Spacer(),
+                Container(
+                  padding:
+                      EdgeInsets.only(top: 3, bottom: 3, left: 10, right: 10),
+                  decoration: const BoxDecoration(
+                      color: Colors.transparent, shape: BoxShape.rectangle),
+                  child: PopupMenuButton(
+                    child: ClipOval(
+                      child: SizedBox.fromSize(
+                        size: Size.fromRadius(20), // Image radius
+                        child: Image.network((imageUrl == null ||
+                                imageUrl == "")
+                            ? 'http://wh.saas.test/geniusBankWallet/assets/user/img/user.jpg'
+                            : 'http://wh.saas.test/geniusBankWallet/assets/images/${imageUrl}'),
+                      ),
+                    ),
+                    color: Colors.white, // color setting
+
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        child: Text(
+                          "Edit Profile",
+                        ),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: Text("Module"),
+                        value: 2,
+                      ),
+                      PopupMenuItem(
+                        child: InkWell(
+                            onTap: () {
+                              print("here");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatScreen()),
+                              );
+                            },
+                            child: Text("Chat")),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: Text("Change Password"),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: Text("Pricing Plan"),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: Text("Security"),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: Text("Login Activity"),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: Text("AML/KYC"),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: Text("Pincode"),
+                        value: 1,
+                      ),
+                      PopupMenuItem(
+                        child: InkWell(
+                            onTap: () {
+                              print("logout");
+                              logout();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                              );
+                            },
+                            child: Text("Logout")),
+                        value: 1,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.center,
