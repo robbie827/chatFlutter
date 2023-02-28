@@ -39,7 +39,7 @@ dependencies:
   cupertino_icons: any   
   image_picker: ^0.8.6+2
   pusher_channels_flutter: ^2.1.0
-
+intl: ^0.17.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

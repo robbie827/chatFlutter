@@ -233,4 +233,24 @@ class ApiService {
       }
     } catch (e) {}
   }
+
+  Future<UserModel?> GetInfo() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      Response response = await post(
+        Uri.parse('$baseUrl/idInfo'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body)["fetch"];
+        print(data);
+        return UserModel.fromJson(data);
+      }
+    } catch (e) {}
+  }
 }

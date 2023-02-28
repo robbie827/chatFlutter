@@ -1,5 +1,6 @@
 import 'package:chatflutter/models/wallet_model.dart';
 import 'package:chatflutter/screen/auth/login_screen.dart';
+import 'package:chatflutter/screen/auth/profile_update_screen.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:chatflutter/service/api.dart';
 import 'package:flutter/material.dart';
@@ -139,8 +140,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  child: Text(
-                    "Edit Profile",
+                  child: InkWell(
+                    onTap: () {
+                      print("edit profile");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileUpdateScreen()),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Edit Profile",
+                      ),
+                    ),
                   ),
                   value: 1,
                 ),

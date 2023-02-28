@@ -1,5 +1,7 @@
+import 'package:chatflutter/models/user_model.dart';
 import 'package:chatflutter/screen/auth/profile_screen.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
+import 'package:chatflutter/service/api.dart';
 import 'package:flutter/material.dart';
 import 'package:chatflutter/models/chatSavedModel.dart';
 
@@ -11,6 +13,24 @@ class SavedScreen extends StatefulWidget {
 }
 
 class _SavedScreenState extends State<SavedScreen> {
+  final ApiService _apiService = ApiService();
+  UserModel? userinfo;
+
+  @override
+  void initState() {
+    super.initState();
+    getIdInfo();
+  }
+
+  void getIdInfo() {
+    _apiService.GetInfo().then((value) {
+      setState(() {
+        userinfo = value;
+        print(userinfo);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +47,10 @@ class _SavedScreenState extends State<SavedScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ChatScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatScreen()));
                       },
                       child: const Icon(
                         Icons.keyboard_arrow_left_sharp,
@@ -57,22 +77,6 @@ class _SavedScreenState extends State<SavedScreen> {
                   ),
                 ),
                 const Spacer(),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.star,
-                    color: Color.fromARGB(255, 236, 204, 63),
-                    size: 23,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.house,
-                    color: Colors.blue,
-                    size: 23,
-                  ),
-                ),
                 Padding(
                     padding: EdgeInsets.all(8.0),
                     child: InkWell(
