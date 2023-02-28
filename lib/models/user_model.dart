@@ -26,6 +26,7 @@ class UserModel {
   String? signature;
   String? stamp;
   String? avatar;
+  String? authority;
 
   UserModel({
     this.id,
@@ -52,6 +53,7 @@ class UserModel {
     this.signature,
     this.stamp,
     this.avatar,
+    this.authority,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -59,12 +61,12 @@ class UserModel {
       id: json["id"],
       accountNumber: json["account_number"] ?? "",
       name: json["name"] ?? "",
-      zip: json["zip"],
+      zip: json["zip"] ?? "",
       dob: json["dob"] ?? "",
       photo: json["photo"] ?? "",
       city: json["city"] ?? "",
       address: json["address"] ?? "",
-      country: json["country"],
+      country: json["country"] ?? "",
       phone: json["phone"] ?? "",
       email: json["email"] ?? "",
       verificationLink: json["verification_link"] ?? "",
@@ -72,14 +74,15 @@ class UserModel {
       section: json["section"] ?? "",
       modules: json["modules"] ?? "",
       companyName: json["company_name"] ?? "",
-      personalCode: json["personal_code"],
-      yourId: json["your_id"],
-      issuedAuthority: json["issued_authority"],
-      dateOfIssue: json["date_of_issue"],
-      dateOfExpire: json["date_of_expire"],
-      signature: json["signature"],
-      stamp: json["stamp"],
-      avatar: json["avatar"],
+      personalCode: json["personal_code"] ?? "",
+      yourId: json["your_id"] ?? "",
+      issuedAuthority: json["issued_authority"] ?? "",
+      dateOfIssue: json["date_of_issue"] ?? "",
+      dateOfExpire: json["date_of_expire"] ?? "",
+      signature: json["signature"] ?? "",
+      stamp: json["stamp"] ?? "",
+      avatar: json["avatar"] ?? "",
+      authority: json["issued_authority"] ?? "",
     );
   }
 }

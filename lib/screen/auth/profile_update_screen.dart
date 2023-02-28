@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chatflutter/models/user_model.dart';
 import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:chatflutter/screen/home/home_screen.dart';
 import 'package:chatflutter/service/api.dart';
@@ -17,8 +18,12 @@ class ProfileUpdateScreen extends StatefulWidget {
 
 class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   File? selectedImage;
-
   final ApiService _apiService = ApiService();
+  UserModel? user;
+  bool com_flag = false;
+  String? firstName;
+  String? lastName;
+
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -46,19 +51,106 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     }
   }
 
+  void profile() {
+    _apiService.Profile().then((value) {
+      user = value;
+      String name = user!.name!;
+      String? dob = user!.dob!;
+      String? doi = user!.dateOfIssue!;
+      String? doe = user!.dateOfExpire!;
+      // dob = dob.replaceRange(10, dob.length, '').toString();
+      // doi = doi.replaceRange(10, doi.length, '').toString();
+      // doe = doe.replaceRange(10, doe.length, '').toString();
+
+      int idx = name.indexOf(" ");
+      List nameParts = [
+        name.substring(0, idx).trim(),
+        name.substring(idx + 1).trim()
+      ];
+      firstName = nameParts[0].toString();
+      lastName = nameParts[1].toString();
+      firstNameController.text = firstName!;
+      lastNameController.text = lastName!;
+      emailController.text = user!.email!;
+      birthdayController.text = dob;
+      phoneController.text = user!.phone!;
+      addressController.text = user!.address!;
+      zipController.text = user!.zip!;
+      countryController.text = user!.country!;
+      cityController.text = user!.city!;
+      personalController.text = user!.personalCode!;
+      yourIdController.text = user!.yourId!;
+      providerController.text = user!.authority!;
+      dateIssueController.text = doi;
+      dateExpireController.text = doe;
+    });
+  }
+
+  void profileUpdate(
+    String firstName,
+    String lastName,
+    String email,
+    String birthday,
+    String phone,
+    String address,
+    String zip,
+    String city,
+    String country,
+    String personal,
+    String yourId,
+    String authority,
+    String doi,
+    String doe,
+  ) {
+    _apiService.ProfileUpdate(firstName, lastName, email, birthday, phone,
+            address, zip, city, country, personal, yourId, authority, doi, doe)
+        .then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Updated successfully"),
+        backgroundColor: Colors.green,
+      ));
+      user = value;
+      String name = user!.name!;
+      String? dob = user!.dob!;
+      String? doi = user!.dateOfIssue!;
+      String? doe = user!.dateOfExpire!;
+      // dob = dob.replaceRange(10, dob.length, '').toString();
+      // doi = doi.replaceRange(10, doi.length, '').toString();
+      // doe = doe.replaceRange(10, doe.length, '').toString();
+
+      int idx = name.indexOf(" ");
+      List nameParts = [
+        name.substring(0, idx).trim(),
+        name.substring(idx + 1).trim()
+      ];
+      firstName = nameParts[0].toString();
+      lastName = nameParts[1].toString();
+      firstNameController.text = firstName;
+      lastNameController.text = lastName;
+      emailController.text = user!.email!;
+      birthdayController.text = dob;
+      phoneController.text = user!.phone!;
+      addressController.text = user!.address!;
+      zipController.text = user!.zip!;
+      countryController.text = user!.country!;
+      cityController.text = user!.city!;
+      personalController.text = user!.personalCode!;
+      yourIdController.text = user!.yourId!;
+      providerController.text = user!.authority!;
+      dateIssueController.text = doi;
+      dateExpireController.text = doe;
+    });
+  }
+
   @override
   void initState() {
-    birthdayController.text = "";
-    dateIssueController.text = "";
-    dateExpireController.text = "";
-    firstNameController.text = " michael";
+    profile();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    firstNameController.dispose();
     super.dispose();
   }
 
@@ -247,7 +339,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  child: Text(
+                  child: const Text(
                     "Update Profile",
                     style: TextStyle(
                       color: Colors.black,
@@ -326,22 +418,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                 ),
                                 onTap: () {}),
                           ),
-                          // Container(
-                          //   padding: EdgeInsets.only(
-                          //     top: 10,
-                          //     bottom: 10,
-                          //   ),
-                          //   width: MediaQuery.of(context).size.width,
-                          //   height: 200,
-                          //   decoration:
-                          //       BoxDecoration(color: Colors.amberAccent),
-                          //   alignment: Alignment.center,
-                          //   child: Text(
-                          //     "Set Image",
-                          //     style: TextStyle(
-                          //         color: Color.fromARGB(255, 78, 165, 236)),
-                          //   ),
-                          // ),
                           Container(
                             padding: const EdgeInsets.all(10),
                             child: TextField(
@@ -436,6 +512,16 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             padding: const EdgeInsets.all(10),
                             child: TextField(
                               controller: cityController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'City',
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: TextField(
+                              controller: countryController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Country',
@@ -635,7 +721,24 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                             child: ElevatedButton(
                               child: const Text('Submit'),
-                              onPressed: () {},
+                              onPressed: () {
+                                profileUpdate(
+                                  firstNameController.text.toString(),
+                                  lastNameController.text.toString(),
+                                  emailController.text.toString(),
+                                  birthdayController.text.toString(),
+                                  phoneController.text.toString(),
+                                  addressController.text.toString(),
+                                  zipController.text.toString(),
+                                  cityController.text.toString(),
+                                  countryController.text.toString(),
+                                  personalController.text.toString(),
+                                  yourIdController.text.toString(),
+                                  providerController.text.toString(),
+                                  dateIssueController.text.toString(),
+                                  dateExpireController.text.toString(),
+                                );
+                              },
                             ),
                           ),
                         ],

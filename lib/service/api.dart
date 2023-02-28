@@ -248,7 +248,71 @@ class ApiService {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body)["fetch"];
-        print(data);
+        return UserModel.fromJson(data);
+      }
+    } catch (e) {}
+  }
+
+  Future<UserModel?> Profile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      Response response = await get(
+        Uri.parse('$baseUrl/profile'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body)["user"];
+        return UserModel.fromJson(data);
+      }
+    } catch (e) {}
+  }
+
+  Future<UserModel?> ProfileUpdate(
+    String firstName,
+    String lastName,
+    String email,
+    String birthday,
+    String phone,
+    String address,
+    String zip,
+    String city,
+    String country,
+    String personal,
+    String yourId,
+    String authority,
+    String doi,
+    String doe,
+  ) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      Response response = await post(Uri.parse('$baseUrl/update'), headers: {
+        'Authorization': 'Bearer $token',
+      }, body: {
+        'firstname': firstName,
+        'lastname': lastName,
+        'email': email,
+        'dob': birthday,
+        'phone': phone,
+        'company_address': address,
+        'company_zipcode': zip,
+        'company_city': city,
+        'personal_code': personal,
+        'your_id': yourId,
+        'issued_authority': authority,
+        'date_of_issue': doi,
+        'date_of_expire': doe,
+        'company_country': country,
+      });
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body)["data"];
         return UserModel.fromJson(data);
       }
     } catch (e) {}

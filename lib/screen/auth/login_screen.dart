@@ -1,8 +1,6 @@
-import 'package:chatflutter/screen/chat/chat_screen.dart';
 import 'package:chatflutter/screen/home/home_screen.dart';
 import 'package:chatflutter/service/api.dart';
 import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
