@@ -20,7 +20,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   File? selectedImage;
   final ApiService _apiService = ApiService();
   UserModel? user;
-  bool com_flag = false;
+  UserModel? user_update;
   String? firstName;
   String? lastName;
 
@@ -109,11 +109,11 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         content: Text("Updated successfully"),
         backgroundColor: Colors.green,
       ));
-      user = value;
-      String name = user!.name!;
-      String? dob = user!.dob!;
-      String? doi = user!.dateOfIssue!;
-      String? doe = user!.dateOfExpire!;
+      user_update = value;
+      String name = user_update!.name!;
+      String? dob = user_update!.dob!;
+      String? doi = user_update!.dateOfIssue!;
+      String? doe = user_update!.dateOfExpire!;
       // dob = dob.replaceRange(10, dob.length, '').toString();
       // doi = doi.replaceRange(10, doi.length, '').toString();
       // doe = doe.replaceRange(10, doe.length, '').toString();
@@ -127,16 +127,16 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       lastName = nameParts[1].toString();
       firstNameController.text = firstName;
       lastNameController.text = lastName;
-      emailController.text = user!.email!;
+      emailController.text = user_update!.email!;
       birthdayController.text = dob;
-      phoneController.text = user!.phone!;
-      addressController.text = user!.address!;
-      zipController.text = user!.zip!;
-      countryController.text = user!.country!;
-      cityController.text = user!.city!;
-      personalController.text = user!.personalCode!;
-      yourIdController.text = user!.yourId!;
-      providerController.text = user!.authority!;
+      phoneController.text = user_update!.phone!;
+      addressController.text = user_update!.address!;
+      zipController.text = user_update!.zip!;
+      countryController.text = user_update!.country!;
+      cityController.text = user_update!.city!;
+      personalController.text = user_update!.personalCode!;
+      yourIdController.text = user_update!.yourId!;
+      providerController.text = user_update!.authority!;
       dateIssueController.text = doi;
       dateExpireController.text = doe;
     });
@@ -151,6 +151,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   @override
   void dispose() {
+    countryController.clear();
+    addressController.clear();
+    yourIdController.clear();
+    dateExpireController.clear();
     super.dispose();
   }
 

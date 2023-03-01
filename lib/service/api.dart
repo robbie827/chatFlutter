@@ -300,19 +300,20 @@ class ApiService {
         'email': email,
         'dob': birthday,
         'phone': phone,
-        'company_address': address,
-        'company_zipcode': zip,
-        'company_city': city,
+        'address': address,
+        'zip': zip,
+        'city': city,
         'personal_code': personal,
         'your_id': yourId,
         'issued_authority': authority,
         'date_of_issue': doi,
         'date_of_expire': doe,
-        'company_country': country,
+        'country': country,
       });
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body)["data"];
+        print(data);
         return UserModel.fromJson(data);
       }
     } catch (e) {}
